@@ -5,7 +5,7 @@ ARG BITCOIN_VERSION=${BITCOIN_VERSION:-26.0}
 ARG TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 
 RUN  apt-get update && \
-     apt-get install -qq --no-install-recommends ca-certificates dirmngr gosu wget libc6 procps python3
+     apt-get install -qq --no-install-recommends ca-certificates dirmngr gosu wget libc6 procps python3.11
 WORKDIR /tmp
 
 # Install Bitcoin binaries based on platform
@@ -22,7 +22,7 @@ RUN case $TARGETPLATFORM in \
 FROM debian:buster-slim as custom-signet-miner
 
 RUN  apt-get update && \
-     apt-get install -qq --no-install-recommends procps python3 python3-pip jq && \
+     apt-get install -qq --no-install-recommends procps python3.11 python3-pip jq && \
      apt-get clean
 
 COPY --from=builder "/tmp/bin/*" /usr/local/bin/
