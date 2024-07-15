@@ -234,7 +234,7 @@ def next_block_delta(last_nbits, last_hash, ultimate_target, do_poisson, max_int
     #  4) if doing poisson, use the last hash to pick a uniformly random number in [0,1), and work out a random multiplier to vary the average by
     #  5) cap the resulting interval between 1 second and 1 hour to avoid extremes
 
-    INTERVAL = 600.0*2016/2015 # 10 minutes, adjusted for the off-by-one bug
+    INTERVAL = 180.0*2016/2015 # 10 minutes, adjusted for the off-by-one bug
 
     current_target = nbits_to_target(last_nbits)
     retarget_factor = ultimate_target / current_target
@@ -309,8 +309,8 @@ def do_generate(args):
             return 1
         my_blocks = (start-1, stop, total)
 
-    if args.max_interval < 960:
-        logging.error("--max-interval must be at least 960 (16 minutes)")
+    if args.max_interval < 96:
+        logging.error("--max-interval must be at least 96 (1.6 minutes)")
         return 1
 
     ultimate_target = nbits_to_target(int(args.nbits,16))
@@ -500,9 +500,9 @@ def main():
     generate.add_argument("--min-nbits", action="store_true", help="Target minimum nBits (use min difficulty)")
     generate.add_argument("--poisson", action="store_true", help="Simulate randomised block times")
     generate.add_argument("--multiminer", default=None, type=str, help="Specify which set of blocks to mine (eg: 1-40/100 for the first 40%%, 2/3 for the second 3rd)")
-    generate.add_argument("--backup-delay", default=300, type=int, help="Seconds to delay before mining blocks reserved for other miners (default=300)")
+    generate.add_argument("--backup-delay", default=30, type=int, help="Seconds to delay before mining blocks reserved for other miners (default=300)")
     generate.add_argument("--standby-delay", default=0, type=int, help="Seconds to delay before mining blocks (default=0)")
-    generate.add_argument("--max-interval", default=1800, type=int, help="Maximum interblock interval (seconds)")
+    generate.add_argument("--max-interval", default=180, type=int, help="Maximum interblock interval (seconds)")
 
     calibrate = cmds.add_parser("calibrate", help="Calibrate difficulty")
     calibrate.set_defaults(fn=do_calibrate)
